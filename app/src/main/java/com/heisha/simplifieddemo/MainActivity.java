@@ -159,37 +159,37 @@ public class MainActivity extends AppCompatActivity {
 		HSSDKManager.getInstance().registAPP(deviceSerial, serverURI, new SDKManagerCallback() {
 			@Override
 			public void onRegister() {
-				Log.d(TAG, "onRegister: 注册成功");
+				Log.d(TAG, "onRegister: Registeration is complete");
 			}
 
 			@Override
 			public void onServerConnected(boolean b, String s) {
-				Log.d(TAG, "connectComplete: 连接服务器成功");
-				Toast.makeText(MainActivity.this, "连接服务器成功", Toast.LENGTH_SHORT).show();
+				Log.d(TAG, "connectComplete: Connecting server success");
+				Toast.makeText(MainActivity.this, "Connecting server success", Toast.LENGTH_SHORT).show();
 			}
 
 			@Override
 			public void onServerDisconnected(Throwable throwable) {
-				Log.d(TAG, "connectionLost: 服务器连接丢失");
+				Log.d(TAG, "connectionLost: Server connection lost");
 				throwable.printStackTrace();
 			}
 
 			@Override
 			public void onProductConnected(final String deviceName) {
-				Log.d(TAG, "onProductConnected: 设备连接成功");
-				Toast.makeText(MainActivity.this, "设备连接成功", Toast.LENGTH_SHORT).show();
+				Log.d(TAG, "onProductConnected: HeiSha device connection success");
+				Toast.makeText(MainActivity.this, "HeiSha device connection success", Toast.LENGTH_SHORT).show();
 				initDevice(deviceName);
 				initDeviceCallback();
 			}
 
 			@Override
 			public void onProductDisconnected() {
-				Log.d(TAG, "onProductConnected: 设备连接丢失");
+				Log.d(TAG, "onProductConnected: HeiSha device connection lost");
 			}
 
 			@Override
 			public void onComponentChanged(BaseComponent baseComponent, ConnStatus connStatus) {
-				Log.d(TAG, "onComponentChanged: 组件状态改变");
+				Log.d(TAG, "onComponentChanged: Component status changed");
 			}
 		});
 	}
@@ -342,53 +342,53 @@ public class MainActivity extends AppCompatActivity {
 				byte checkResult = mEdgeComputing.getMeteorologicalStation().environmentalCheck();
 				if ((checkResult & 0x01) > 0) {
 					if ((checkResult & 0x02) > 0) {
-						print.append("风速仪已连接\n");
-						print.append("当前风速为 ").
+						print.append("Wind meter connected\n");
+						print.append("Current wind speed ").
 								append(mEdgeComputing.getMeteorologicalStation().getAnemograph().getWindSpeed()).append("m/s\n");
 					} else {
-						print.append("风速仪未连接\n");
+						print.append("Wind meter not connected\n");
 					}
 
 					if ((checkResult & 0x08) > 0) {
-						print.append("雨量计已连接\n");
-						print.append("当前累计雨量值为 ").
+						print.append("Rain meter connected\n");
+						print.append("Current cumulative rainfall value ").
 								append(mEdgeComputing.getMeteorologicalStation().getRainGauge().getRainfall()).append("mm\n");
 					} else {
-						print.append("雨量计未连接\n");
+						print.append("Rain meter not connected\n");
 					}
 
 					if ((checkResult & 0x20) > 0) {
-						print.append("温湿度计已连接\n");
-						print.append("当前温度为 ").
+						print.append("Hygrothermograph is connected\n");
+						print.append("Current temperature ").
 								append(mEdgeComputing.getMeteorologicalStation().getHygrothermograph().getTemperature()).append("℃\n");
-						print.append("当前湿度为 ").
+						print.append("Current humidity ").
 								append(mEdgeComputing.getMeteorologicalStation().getHygrothermograph().getHumidity()).append("%\n");
 					} else {
-						print.append("温湿度计未连接\n");
+						print.append("Hygrothermograph not connected\n");
 					}
 				} else {
-					print.append("气象站未连接,环境检测失败\n");
+					print.append("Meteorological station not connected, environmental detection failed\n");
 				}
 
-				print.append("总结：");
+				print.append("Summary report：");
 				if ((checkResult & 0x01) == 0) {
-					print.append("气象站未连接，不建议起飞\n");
+					print.append("Meteorological station not connected, not recommended for takeoff\n");
 				} else if ((checkResult & 0x02) == 0) {
-					print.append("风速未知，不建议起飞\n");
+					print.append("Wind speed unknown, not recommended to take off\n");
 				} else if ((checkResult & 0x04) > 0) {
-					print.append("风力等级大于5级，不建议起飞\n");
+					print.append("Wind scale greater than 5, not recommended to take off\n");
 				} else if ((checkResult & 0x08) == 0) {
-					print.append("降雨情况未知，不建议起飞\n");
+					print.append("Rainfall value unknown, not recommended for takeoff\n");
 				} else if ((checkResult & 0x10) > 0) {
-					print.append("正在降雨，不建议起飞\n");
+					print.append("Raining, not recommended to take off\n");
 				} else {
-					print.append("环境系数检测完毕,风力等级小于5级,未在降雨,可以起飞\n");
+					print.append("Environmental coefficient detection is completed, wind level is less than 5, no rainfall, can take off\n");
 				}
 			} else {
-				print.append("设备未连接,环境检测失败\n");
+				print.append("HeiSha device not connected, environment detection failur\n");
 			}
 		} else {
-			print.append("MQTT服务器未连接,环境检测失败\n");
+			print.append("MQTT Server not connected, environment detection failed\n");
 		}
 
 		mTxtInfo.setText(print.toString());
@@ -410,90 +410,90 @@ public class MainActivity extends AppCompatActivity {
 							if (HSSDKManager.getInstance().getMQTTServerConnectionStatus() == ConnStatus.CONNECTED) {
 								if (HSSDKManager.getInstance().getDeviceConnectionStatus() == ConnStatus.CONNECTED) {
 									mControlCenter.ShortcutReadyFlying();
-									print.append("一键备飞开始\n");
+									print.append("One-click flight preparation starts\n");
 									step++;
 								} else {
-									print.append("设备未连接,一键备飞中断\n");
+									print.append("The HeiSha device is not connected, One-click flight preparation interrupted\n");
 									actionResult = 2;
 								}
 							} else {
-								print.append("MQTT服务器未连接,一键备飞中断\n");
+								print.append("MQTT server is not connected,One-click flight preparation interrupted\n");
 								actionResult = 2;
 							}
 							break;
 						case 1:
 							if (mRemoteControl.getConnectionStatus() == ConnStatus.CONNECTED) {
 								if (mRemoteControl.getRCUSBCableStatus() == 1) {
-									print.append("遥控器USB数据线已插入\n");
+									print.append("The remote control USB cable is inserted\n");
 									step++;
 								}
 							} else {
-								print.append("遥控器模块未连接,一键备飞中断\n");
+								print.append("The remote control module is not connected,One-click flight preparation interrupted\n");
 								actionResult = 2;
 							}
 							break;
 						case 2:
 							if (mCharger.getConnectionStatus() == ConnStatus.CONNECTED) {
 								if (mCharger.getBatteryManager().getBatteryDetectStatus() == BatteryDetectState.BATTERY_DETECT_YES) {
-									print.append("已检测到无人机\n");
+									print.append("Drones have been detected\n");
 									step++;
 								}
 							} else {
-								print.append("充电控制模块未连接,一键备飞中断\n");
+								print.append("Charging control module not connected,One-click flight preparation interrupted\n");
 								actionResult = 2;
 							}
 							break;
 						case 3:
 							if (mCharger.getConnectionStatus() == ConnStatus.CONNECTED) {
 								if (mCharger.getDroneSwitch().getDroneStatus() == DroneSwitchState.DRONE_STATUS_POWER_ON) {
-									print.append("无人机已开机\n");
+									print.append("Drone powered on\n");
 									step++;
 								}
 							} else {
-								print.append("充电控制模块未连接,一键备飞中断\n");
+								print.append("Charging control module not connected,One-click flight preparation interrupted\n");
 								actionResult = 2;
 							}
 							break;
 						case 4:
 							if (mRemoteControl.getConnectionStatus() == ConnStatus.CONNECTED) {
 								if (mRemoteControl.getRCPowerState() == PowerState.POWER_ON) {
-									print.append("遥控器已开机\n");
+									print.append("Remote control powered on\n");
 									step++;
 								}
 							} else {
-								print.append("遥控器模块未连接,一键备飞中断\n");
+								print.append("Remote control module not connected,One-click flight preparation interrupted\n");
 								actionResult = 2;
 							}
 							break;
 						case 5:
 							if (mPositionBar.getConnectionState() == ConnStatus.CONNECTED) {
 								if (mPositionBar.getPositionBarState() == PositionBarState.POSITION_BAR_STATUS_UNLOCKED) {
-									print.append("归中杆已松开\n");
+									print.append("Charge bars released\n");
 									step++;
 								}
 							} else {
-								print.append("归中模块未连接,一键备飞中断\n");
+								print.append("Charge bars module not connected,One-click flight preparation interrupted\n");
 								actionResult = 2;
 							}
 							break;
 						case 6:
 							if (mCanopy.getConnectionState() == ConnStatus.CONNECTED) {
 								if (mCanopy.getCanopyState() == CanopyState.CANOPY_STATUS_OPEN) {
-									print.append("防雨盖已打开\n");
+									print.append("Canopy opened\n");
 									step++;
 								}
 							} else {
-								print.append("防雨盖模块未连接,一键备飞中断\n");
+								print.append("Canopy control module not connected,One-click flight preparation interrupted\n");
 								actionResult = 2;
 							}
 							break;
 						case 7:
 							if (mReadyToTakeoffResult == 1) {
-								print.append("一键备飞完成\n");
+								print.append("One-click flight preparation complete\n");
 								actionResult = 1;
 								mReadyToTakeoffResult = 0;
 							} else if (mReadyToTakeoffResult == 2) {
-								print.append("一键备飞失败,alarm为").append(mAlarmCode).append("\n");
+								print.append("One-click flight preparation failure,alarm ").append(mAlarmCode).append("\n");
 								actionResult = 2;
 								mReadyToTakeoffResult = 0;
 							}
@@ -501,15 +501,15 @@ public class MainActivity extends AppCompatActivity {
 					}
 
 					if (HSSDKManager.getInstance().getMQTTServerConnectionStatus() == ConnStatus.DISCONNECTED) {
-						print.append("MQTT服务器未连接,一键备飞中断\n");
+						print.append("MQTT server not connected,One-click flight preparation interrupted\n");
 						actionResult = 2;
 					}
 					if (HSSDKManager.getInstance().getDeviceConnectionStatus() == ConnStatus.DISCONNECTED) {
-						print.append("设备未连接,一键备飞中断\n");
+						print.append("HeiSha device not connected,One-click flight preparation interrupted\n");
 						actionResult = 2;
 					}
 					if (mReadyToTakeoffResult == 2) {
-						print.append("一键备飞失败,alarm为").append(mAlarmCode).append("\n");
+						print.append("One-click flight preparation failure,alarm ").append(mAlarmCode).append("\n");
 						actionResult = 2;
 						mReadyToTakeoffResult = 0;
 					}
@@ -548,79 +548,79 @@ public class MainActivity extends AppCompatActivity {
 							if (HSSDKManager.getInstance().getMQTTServerConnectionStatus() == ConnStatus.CONNECTED) {
 								if (HSSDKManager.getInstance().getDeviceConnectionStatus() == ConnStatus.CONNECTED) {
 									mControlCenter.ShortcutChargingEnforcedly();
-									print.append("一键充电开始\n");
+									print.append("One-click to charge starts\n");
 									step++;
 								} else {
-									print.append("设备未连接,一键充电中断\n");
+									print.append("HeiSha device not connected,One-click to charge interrupted\n");
 									actionResult = 2;
 								}
 							} else {
-								print.append("MQTT服务器未连接,一键充电中断\n");
+								print.append("MQTT server not connected,One-click to charge interrupted\n");
 								actionResult = 2;
 							}
 							break;
 						case 1:
 							if (mAirConditioner.getConnectionState() == ConnStatus.CONNECTED) {
-								print.append("空调工作模式为：").
+								print.append("A/C working mode：").
 										append(mAirConditioner.getAirConditionerWorkingMode().toString()).append("\n");
 								step++;
 							} else {
-								print.append("空调模块未连接,一键充电中断\n");
+								print.append("A/C module not connected,One-click to charge interrupted\n");
 								actionResult = 2;
 							}
 							break;
 						case 2:
 							if (mPositionBar.getConnectionState() == ConnStatus.CONNECTED) {
 								if (mPositionBar.getPositionBarState() == PositionBarState.POSITION_BAR_STATUS_LOCKED) {
-									print.append("归中杆已收紧\n");
+									print.append("Charge bars locked\n");
 									step++;
 								}
 							} else {
-								print.append("归中模块未连接,一键充电中断\n");
+								print.append("Charge bars module not connected,One-click to charge interrupted\n");
 								actionResult = 2;
 							}
 							break;
 						case 3:
 							if (mCanopy.getConnectionState() == ConnStatus.CONNECTED) {
 								if (mCanopy.getCanopyState() == CanopyState.CANOPY_STATUS_CLOSE) {
-									print.append("防雨盖已关闭\n");
+									print.append("Canopy closed\n");
 									step++;
 								}
 							} else {
-								print.append("防雨盖模块未连接,一键充电中断\n");
+								print.append("Canopy module not connected,One-click to charge interrupted\n");
 								actionResult = 2;
 							}
 							break;
 						case 4:
 							if (mCharger.getConnectionStatus() == ConnStatus.CONNECTED) {
 								if (mCharger.getBatteryManager().getBatteryDetectStatus() == BatteryDetectState.BATTERY_DETECT_YES) {
-									print.append("已检测到无人机\n");
+									print.append("Drone detected\n");
 									step++;
 								}
 							} else {
-								print.append("充电控制模块未连接,一键充电中断\n");
+								print.append("Charge control module not connected,One-click to charge interrupted\n");
 								actionResult = 2;
 							}
 							break;
 						case 5:
 							if (mCharger.getConnectionStatus() == ConnStatus.CONNECTED) {
 								if (mCharger.getDroneSwitch().getDroneStatus() == DroneSwitchState.DRONE_STATUS_POWER_OFF) {
-									print.append("无人机已关机\n");
+									print.append("Drone powered off\n");
 									step++;
 								}
 							} else {
-								print.append("充电控制模块未连接,一键充电中断\n");
+								print.append("Charge control module not connected,One-click to charge interrupted\n");
 								actionResult = 2;
 							}
 							break;
 						case 6:
 							if (mRemoteControl.getConnectionStatus() == ConnStatus.CONNECTED) {
 								if (mRemoteControl.getRCPowerState() == PowerState.POWER_OFF) {
-									print.append("遥控器已关机\n");
+									print.append("Remote control powered off\n");
 									step++;
 								}
 							} else {
-								print.append("遥控器模块未连接,一键充电中断\n");
+								print.append("Remote control module not connected,One-click to charge interrupted\n");
 								actionResult = 2;
 							}
 							break;
@@ -628,17 +628,17 @@ public class MainActivity extends AppCompatActivity {
 							if (mCharger.getConnectionStatus() == ConnStatus.CONNECTED) {
 								if (mCharger.getChargingStatus() != ChargeState.CHARGE_STATUS_UNCHARGE &&
 										mCharger.getChargingStatus() != ChargeState.CHARGE_STATUS_FAULT) {
-									print.append("充电中...\n");
+									print.append("Charging...\n");
 									step++;
 								}
 							} else {
-								print.append("充电控制模块未连接,一键充电中断\n");
+								print.append("Charge control module not connected,One-click to charge interrupted\n");
 								actionResult = 2;
 							}
 							break;
 						case 8:
 							if (mChargingImmediatelyResult == 2) {
-								print.append("一键充电失败,alarm为").append(mAlarmCode).append("\n");
+								print.append("One-click to charge failure,alarm ").append(mAlarmCode).append("\n");
 								actionResult = 2;
 								mChargingImmediatelyResult = 0;
 							} else {
@@ -647,30 +647,30 @@ public class MainActivity extends AppCompatActivity {
 							}
 							break;
 						case 9:
-							print.append("设定的制热为 ").append(mHeatingTempweature).append("℃\n");
+							print.append("Heating starts at ").append(mHeatingTempweature).append("℃\n");
 							mControlCenter.getConfigParameter(ConfigParameter.SERVICE_PARAM_AIR_ROOM_MAXTEM);
 							step++;
 							break;
 						case 10:
-							print.append("设定的制冷为 ").append(mCoolingTempweature).append("℃\n");
+							print.append("Cooling starts at ").append(mCoolingTempweature).append("℃\n");
 							step++;
 							break;
 						case 11:
-							print.append("当前腔体温度为 ").append(mAirConditioner.getCabinTemperature()).append("℃\n");
+							print.append("Internal temperature ").append(mAirConditioner.getCabinTemperature()).append("℃\n");
 							step++;
 							break;
 						case 12:
-							print.append("电池温度为 ").append(mCharger.getBatteryManager().getBatteryTemperature()).append("℃\n");
+							print.append("Battery temperature ").append(mCharger.getBatteryManager().getBatteryTemperature()).append("℃\n");
 							step++;
 							break;
 						case 13:
-							print.append("空调工作模式为：").
+							print.append("A/C working mode：").
 									append(mAirConditioner.getAirConditionerWorkingMode().toString()).append("\n");
 							step++;
 							break;
 						case 14:
 							if (mChargingImmediatelyResult == 1) {
-								print.append("一键充电完成\n");
+								print.append("One-click to charge complete\n");
 								actionResult = 1;
 								mChargingImmediatelyResult = 0;
 							}
@@ -678,15 +678,15 @@ public class MainActivity extends AppCompatActivity {
 					}
 
 					if (HSSDKManager.getInstance().getMQTTServerConnectionStatus() == ConnStatus.DISCONNECTED) {
-						print.append("MQTT服务器未连接,一键充电中断\n");
+						print.append("MQTT server not connected,One-click to charge interrupted\n");
 						actionResult = 2;
 					}
 					if (HSSDKManager.getInstance().getDeviceConnectionStatus() == ConnStatus.DISCONNECTED) {
-						print.append("设备未连接,一键充电中断\n");
+						print.append("HeiSha device not connected,One-click to charge interrupted\n");
 						actionResult = 2;
 					}
 					if (mChargingImmediatelyResult == 2) {
-						print.append("一键充电失败,alarm为").append(mAlarmCode).append("\n");
+						print.append("One-click to charge failure,alarm ").append(mAlarmCode).append("\n");
 						actionResult = 2;
 						mChargingImmediatelyResult = 0;
 					}

@@ -25,21 +25,21 @@
 				android:id="@+id/btn_environmental_check"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="环境检测"
+				android:text="Environmental coefficient detection"
 				android:textAllCaps="false" />
 
 			<Button
 				android:id="@+id/btn_ready_to_takeoff"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="一键备飞"
+				android:text="One-click Flight Preparation"
 				android:textAllCaps="false" />
 
 			<Button
 				android:id="@+id/btn_charging_immediately"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="一键充电"
+				android:text="One-click to Charge"
 				android:textAllCaps="false" />
 		</LinearLayout>
 
