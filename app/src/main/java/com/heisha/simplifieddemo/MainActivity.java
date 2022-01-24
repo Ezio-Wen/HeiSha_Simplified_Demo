@@ -409,7 +409,7 @@ public class MainActivity extends AppCompatActivity {
 						case 0:
 							if (HSSDKManager.getInstance().getMQTTServerConnectionStatus() == ConnStatus.CONNECTED) {
 								if (HSSDKManager.getInstance().getDeviceConnectionStatus() == ConnStatus.CONNECTED) {
-									mControlCenter.ShortcutReadyFlying();
+									mControlCenter.OneClickFlightPreparation();
 									print.append("One-click flight preparation starts\n");
 									step++;
 								} else {
@@ -547,7 +547,7 @@ public class MainActivity extends AppCompatActivity {
 						case 0:
 							if (HSSDKManager.getInstance().getMQTTServerConnectionStatus() == ConnStatus.CONNECTED) {
 								if (HSSDKManager.getInstance().getDeviceConnectionStatus() == ConnStatus.CONNECTED) {
-									mControlCenter.ShortcutChargingEnforcedly();
+									mControlCenter.OneClickChargingEnforcedly();
 									print.append("One-click to charge starts\n");
 									step++;
 								} else {
